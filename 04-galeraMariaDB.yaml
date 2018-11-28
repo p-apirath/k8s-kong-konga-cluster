@@ -77,8 +77,8 @@ spec:
           value: password
         - name: CLUSTER_NAME
           value: galera-mariadb-cluster
-        # - name: MYSQL_DATABASE
-        #   value: konga_database
+        - name: MYSQL_DATABASE
+          value: konga_database
         - name: MYSQL_USER
           value: kong
         - name: MYSQL_PASSWORD
