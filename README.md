@@ -3,7 +3,7 @@ kong-api with cassandra and konga with galera mariadb as admin UI for kong
 
 1.
 ```
-$ git clone ......
+$ git clone [this repo](../)
 $ cd k8s-kong-konga-cluster
 ```
 2.
