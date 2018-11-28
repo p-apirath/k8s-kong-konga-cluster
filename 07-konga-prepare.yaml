@@ -10,8 +10,5 @@ spec:
       containers:
       - name: konga-prepare
         image: pantsel/konga:next
-        # command: [ "/bin/sh", "-c", "prepare -a mysql -u mysql://root:b3BjZWxsZW50@mariadb:3306/konga_database" ]
-        command: [ "-c prepare -a mysql -u mysql://root:opcellent@mariadb:3306/konga_database" ]
-        # command: [ "-c" ]
-        # args: [ "prepare -a mysql -u mysql://root:opcellent@mariadb:3306/konga_database" ]
+        command: [ "/bin/bash", "start.sh", "-c prepare -a mysql -u mysql://kong:kong@mariadb:3306/konga_database" ]
       restartPolicy: Never
