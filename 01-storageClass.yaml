@@ -1,0 +1,156 @@
+##### https://kubernetes.io/docs/concepts/storage/storage-classes
+##### Google StorageClass #####
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1beta1
+metadata:
+  name: gcp-storage
+provisioner: kubernetes.io/gce-pd
+parameters:
+  # type: pd-ssd
+  type: pd-standard # Default
+  # zone: asia-southeast1
+  # zones: asia-southeast1-a,asia-southeast1-b,asia-southeast1-c
+  # replication-type: regional-pd
+  # replication-type: none
+# reclaimPolicy: Retain
+# reclaimPolicy: Delete
+#
+#
+##### AWS StorageClass #####
+# ---
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1beta1
+# metadata:
+#   name: aws-storage
+# provisioner: kubernetes.io/aws-ebs
+# parameters:
+#   # type: io1
+#   type: gp2 # Default
+#   # type: sc1
+#   # type: st1
+#   iopsPerGB: "10"
+#   fsType: ext4
+#   encrypted: "false"
+#   zone: ap-southeast1-a
+#   zones: ap-southeast1-a,ap-southeast1-b
+# # reclaimPolicy: Delete
+# reclaimPolicy: Retain
+# mountOptions:
+#   - debug
+# volumeBindingMode: Immediate
+# volumeBindingMode: WaitForFirstConsumer
+#
+#
+# ##### GlusterFS StorageClass #####
+# ---
+# apiVersion: storage.k8s.io/v1beta1
+# kind: StorageClass
+# metadata:
+#   name: glusterfs-storage
+# provisioner: kubernetes.io/glusterfs
+# parameters:
+#   resturl: "http://127.0.0.1:8081"
+#   clusterid: "630372ccdc720a92c681fb928f27b53f"
+#   restauthenabled: "true"
+#   restuser: "admin"
+#   secretNamespace: "default"
+#   secretName: "heketi-secret"
+#   gidMin: "40000"
+#   gidMax: "50000"
+#   volumetype: "replicate:3"
+#
+#
+# ##### OpenStack Cinder StorageClass #####
+# ---
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1beta1
+# metadata:
+#   name: openstack-cinder-storage
+# provisioner: kubernetes.io/cinder
+# parameters:
+#   availability: nova
+#
+#
+# ##### Ceph RBD StorageClass #####
+# ---
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1beta1
+# metadata:
+#   name: ceph-rbd-storage
+# provisioner: kubernetes.io/rbd
+# parameters:
+#   monitors: 10.16.153.105:6789
+#   adminId: kube
+#   adminSecretName: ceph-secret
+#   adminSecretNamespace: kube-system
+#   pool: kube
+#   userId: kube
+#   userSecretName: ceph-secret-user
+#   userSecretNamespace: default
+#   fsType: ext4
+#   imageFormat: "2"
+#   imageFeatures: "layering"
+#
+#
+# ##### Azure Disk StorageClass #####
+# ---
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1beta1
+# metadata:
+#   name: azuredisk-storage
+# provisioner: kubernetes.io/azure-disk
+# parameters:
+#   skuName: Standard_LRS
+#   location: eastus
+#   storageAccount: azure_storage_account_name
+#
+#
+# ##### New Azure Disk StorageClass #####
+# ---
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1beta1
+# metadata:
+#   name: slow
+# provisioner: kubernetes.io/azure-disk
+# parameters:
+#   storageaccounttype: Standard_LRS
+#   kind: Shared
+#
+#
+# ##### Azure File StorageClass #####
+# ---
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1beta1
+# metadata:
+#   name: azurefile-storage
+# provisioner: kubernetes.io/azure-file
+# parameters:
+#   skuName: Standard_LRS
+#   location: eastus
+#   storageAccount: azure_storage_account_name
+#
+#
+# ##### Portworx Volume StorageClass #####
+# ---
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1beta1
+# metadata:
+#   name: portworx-io-priority-high
+# provisioner: kubernetes.io/portworx-volume
+# parameters:
+#   repl: "1"
+#   snap_interval:   "70"
+#   io_priority:  "high"
+#
+#
+# ##### Local StorageClass #####
+# ---
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1beta1
+# metadata:
+#   name: local-storage
+# provisioner: kubernetes.io/no-provisioner
+# # reclaimPolicy: Delete
+# # volumeBindingMode: Immediate
+# # volumeBindingMode: WaitForFirstConsumer

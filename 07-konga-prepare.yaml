@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: konga-prepare
+spec:
+  template:
+    metadata:
+      name: konga-prepare
+    spec:
+      containers:
+      - name: konga-prepare
+        image: pantsel/konga:next
+        # command: [ "/bin/sh", "-c", "prepare -a mysql -u mysql://root:b3BjZWxsZW50@mariadb:3306/konga_database" ]
+        command: [ "-c prepare -a mysql -u mysql://root:opcellent@mariadb:3306/konga_database" ]
+        # command: [ "-c" ]
+        # args: [ "prepare -a mysql -u mysql://root:opcellent@mariadb:3306/konga_database" ]
+      restartPolicy: Never
