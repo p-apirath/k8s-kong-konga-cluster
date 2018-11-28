@@ -1,11 +1,7 @@
 # k8s-kong-konga-cluster
 kong-api with cassandra and konga with galera mariadb as admin UI for kong  
-  
-1.
-```
-$ git clone https://vca.ais.co.th/ecomos/containers/kong-api-appgw-cluster.git
-$ cd kong-api-appgw-cluster
-```
+
+1. fork this repo
 2.
 ```
 $ kubectl create -f 01-storageClass.yaml
