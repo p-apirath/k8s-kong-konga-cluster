@@ -1,8 +1,11 @@
 # k8s-kong-konga-cluster
 kong-api with cassandra and konga with galera mariadb as admin UI for kong  
 
-1. fork this repo  
-
+1.
+```
+$ git clone ......
+$ cd k8s-kong-konga-cluster
+```
 2.
 ```
 $ kubectl create -f 01-storageClass.yaml
