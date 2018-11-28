@@ -87,7 +87,7 @@ spec:
         app: kong
     spec:
       containers:
-      - name: kong
+      - name: kong-rc
         image: kong
         env:
           - name: KONG_PROXY_LISTEN

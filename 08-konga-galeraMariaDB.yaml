@@ -18,7 +18,7 @@ spec:
   #   targetPort: 1337
   #   protocol: TCP
   selector:
-    app: konga-rc
+    app: konga
 
 # ##### Konga Service #####
 # ---
@@ -39,14 +39,13 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: konga-rc
+  name: konga
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: konga-rc
-        app: konga-rc
+        app: konga
     spec:
       containers:
       - name: konga-rc
