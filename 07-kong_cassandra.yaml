@@ -1,47 +1,62 @@
+##### Kong external Service #####
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: kong-proxy
+  name: kong-lb
 spec:
   type: LoadBalancer
   loadBalancerSourceRanges:
   - 0.0.0.0/0
   ports:
-  - name: kong-proxy
-    port: 8000
-    targetPort: 8000
-    protocol: TCP
-  - name: kong-proxy-ssl
-    port: 443
-    targetPort: 8443
-    protocol: TCP
-  - name: kong-proxy-redirect
+  - name: kong-proxy-redirect-lb
     port: 80
     targetPort: 80
+    protocol: TCP
+  # - name: kong-proxy-lb
+  #   port: 8000
+  #   targetPort: 8000
+  #   protocol: TCP
+  - name: kong-proxy-ssl-lb
+    port: 443
+    targetPort: 8443
     protocol: TCP
   selector:
     app: kong
 
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: kong-admin
-# spec:
-#   type: LoadBalancer
-#   loadBalancerSourceRanges:
-#   - 0.0.0.0/0
-#   ports:
-#   - name: kong-admin
-#     port: 8001
-#     targetPort: 8001
-#     protocol: TCP
-#   - name: kong-admin-ssl
-#     port: 8444
-#     targetPort: 8444
-#     protocol: TCP
-#   selector:
-#     app: kong
+##### Kong internal Service #####
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kong
+  name: kong
+spec:
+  clusterIP: None
+  ports:
+    # - name: kong-proxy-redirect
+    #   port: 80
+    #   targetPort: 80
+    #   protocol: TCP
+    - name: kong-proxy
+      port: 8000
+      targetPort: 8000
+      protocol: TCP
+    # - name: kong-proxy-ssl
+    #   port: 8443
+    #   targetPort: 8443
+    #   protocol: TCP
+    - name: kong-admin
+      port: 8001
+      targetPort: 8001
+      protocol: TCP
+    - name: kong-admin-ssl
+      port: 8444
+      targetPort: 8444
+      protocol: TCP
+  selector:
+    app: kong
 
 # ---
 # apiVersion: batch/v1
@@ -62,13 +77,12 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: kong-rc
+  name: kong
 spec:
   replicas: 3
   template:
     metadata:
       labels:
-        name: kong-rc
         app: kong
     spec:
       containers:

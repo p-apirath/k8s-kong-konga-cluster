@@ -1,5 +1,5 @@
 ##### Konga LoadBalancer Service #####
----
+# ---
 apiVersion: v1
 kind: Service
 metadata:
@@ -18,7 +18,22 @@ spec:
   #   targetPort: 1337
   #   protocol: TCP
   selector:
-    app: konga
+    app: konga-rc
+
+# ##### Konga Service #####
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   labels:
+#     app: konga
+#   name: konga
+# spec:
+#   clusterIP: None
+#   ports:
+#     - port: 1337
+#   selector:
+#     app: konga-rc
 
 ---
 apiVersion: extensions/v1beta1
@@ -31,26 +46,28 @@ spec:
     metadata:
       labels:
         name: konga-rc
-        app: konga
+        app: konga-rc
     spec:
       containers:
-      - name: konga
+      - name: konga-rc
         image: pantsel/konga:next
         env:
           - name: DB_URI
             value: "mysql://kong:kong@mariadb:3306/konga_database"
-          - name: DB_ADAPTER
-            value: "mysql"
-          - name: DB_HOST
-            value: "mariadb"
-          - name: DB_USER
-            value: "kong"
-          - name: DB_PASSWORD
-            value: "kong"
+          # - name: DB_ADAPTER
+          #   value: "mysql"
+          # - name: DB_HOST
+          #   value: "mariadb"
+          # - name: DB_PORT
+          #   value: 3306
+          # - name: DB_USER
+          #   value: "kong"
+          # - name: DB_PASSWORD
+          #   value: "kong"
+          # - name: DB_DATABASE
+          #   value: "konga_database"
           - name: TOKEN_SECRET
             value: "km1GUr4RkcQD7DewhJPNXrCuZwcKmqjb"
-          - name: DB_DATABASE
-            value: "konga_database"
           - name: NODE_ENV
             value: "production"
         ports:
