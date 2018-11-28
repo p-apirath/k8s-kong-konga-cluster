@@ -33,6 +33,7 @@ metadata:
     app: kong
   name: kong
 spec:
+  type: ClusterIP
   clusterIP: None
   ports:
     # - name: kong-proxy-redirect
