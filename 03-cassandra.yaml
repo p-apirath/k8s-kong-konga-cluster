@@ -41,7 +41,7 @@ metadata:
   name: cassandra
 spec:
   serviceName: cassandra
-  replicas: 5
+  replicas: 3
   template:
     metadata:
       labels:
@@ -81,7 +81,7 @@ spec:
           - name: HEAP_NEWSIZE
             value: 128M
           - name: CASSANDRA_SEEDS
-            value: "cassandra-0.cassandra.default.svc.cluster.local,cassandra-1.cassandra.default.svc.cluster.local,cassandra-2.cassandra.default.svc.cluster.local,cassandra-3.cassandra.default.svc.cluster.local,cassandra-4.cassandra.default.svc.cluster.local"
+            value: "cassandra-0.cassandra.default.svc.cluster.local,cassandra-1.cassandra.default.svc.cluster.local,cassandra-2.cassandra.default.svc.cluster.local"
           - name: CASSANDRA_CLUSTER_NAME
             value: "K8sCassandra"
           - name: CASSANDRA_DC
