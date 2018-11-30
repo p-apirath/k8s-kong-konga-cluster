@@ -14,5 +14,5 @@ $ kubectl create -f 04-galeraMariaDB.yaml
 $ kubectl create -f 05-kong_migration_cassandra.yaml
 $ kubectl create -f 06-konga-prepare.yaml
 $ kubectl create -f 07-kong_cassandra.yaml
-$ kubectl create -f 08-konga-galeraMariaDB
+$ kubectl create -f 08-konga-galeraMariaDB.yaml
 ```
