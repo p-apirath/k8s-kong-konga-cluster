@@ -6,6 +6,7 @@
 #   name: cassandra-lb
 #   labels:
 #     app: cassandra-lb
+#   namespace: kong-cluster
 # spec:
 #   type: LoadBalancer
 #   loadBalancerSourceRanges:
@@ -26,6 +27,7 @@ metadata:
   labels:
     app: cassandra
   name: cassandra
+  namespace: kong-cluster
 spec:
   clusterIP: None
   ports:
@@ -39,6 +41,7 @@ apiVersion: "apps/v1beta1"
 kind: StatefulSet
 metadata:
   name: cassandra
+  namespace: kong-cluster
 spec:
   serviceName: cassandra
   replicas: 3
@@ -81,7 +84,7 @@ spec:
           - name: HEAP_NEWSIZE
             value: 128M
           - name: CASSANDRA_SEEDS
-            value: "cassandra-0.cassandra.default.svc.cluster.local,cassandra-1.cassandra.default.svc.cluster.local,cassandra-2.cassandra.default.svc.cluster.local"
+            value: "cassandra-0.cassandra.kong-cluster.svc.cluster.local,cassandra-1.cassandra.kong-cluster.svc.cluster.local,cassandra-2.cassandra.kong-cluster.svc.cluster.local"
           - name: CASSANDRA_CLUSTER_NAME
             value: "K8sCassandra"
           - name: CASSANDRA_DC

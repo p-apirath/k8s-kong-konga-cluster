@@ -1,3 +1,11 @@
+##### https://kubernetes.io/docs/tasks/administer-cluster/namespaces/
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kong-cluster
+  labels:
+    app: kong-cluster
 ##### https://kubernetes.io/docs/concepts/storage/storage-classes
 ##### Google StorageClass #####
 ---
@@ -5,6 +13,7 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1beta1
 metadata:
   name: gcp-storage
+  namespace: kong-cluster
 provisioner: kubernetes.io/gce-pd
 parameters:
   # type: pd-ssd
@@ -23,6 +32,7 @@ parameters:
 # apiVersion: storage.k8s.io/v1beta1
 # metadata:
 #   name: aws-storage
+#   namespace: kong-cluster
 # provisioner: kubernetes.io/aws-ebs
 # parameters:
 #   # type: io1
@@ -48,6 +58,7 @@ parameters:
 # kind: StorageClass
 # metadata:
 #   name: glusterfs-storage
+#   namespace: kong-cluster
 # provisioner: kubernetes.io/glusterfs
 # parameters:
 #   resturl: "http://127.0.0.1:8081"
@@ -67,6 +78,7 @@ parameters:
 # apiVersion: storage.k8s.io/v1beta1
 # metadata:
 #   name: openstack-cinder-storage
+#   namespace: kong-cluster
 # provisioner: kubernetes.io/cinder
 # parameters:
 #   availability: nova
@@ -78,6 +90,7 @@ parameters:
 # apiVersion: storage.k8s.io/v1beta1
 # metadata:
 #   name: ceph-rbd-storage
+#   namespace: kong-cluster
 # provisioner: kubernetes.io/rbd
 # parameters:
 #   monitors: 10.16.153.105:6789
@@ -99,6 +112,7 @@ parameters:
 # apiVersion: storage.k8s.io/v1beta1
 # metadata:
 #   name: azuredisk-storage
+#   namespace: kong-cluster
 # provisioner: kubernetes.io/azure-disk
 # parameters:
 #   skuName: Standard_LRS
@@ -112,6 +126,7 @@ parameters:
 # apiVersion: storage.k8s.io/v1beta1
 # metadata:
 #   name: slow
+#   namespace: kong-cluster
 # provisioner: kubernetes.io/azure-disk
 # parameters:
 #   storageaccounttype: Standard_LRS
@@ -124,6 +139,7 @@ parameters:
 # apiVersion: storage.k8s.io/v1beta1
 # metadata:
 #   name: azurefile-storage
+#   namespace: kong-cluster
 # provisioner: kubernetes.io/azure-file
 # parameters:
 #   skuName: Standard_LRS
@@ -137,6 +153,7 @@ parameters:
 # apiVersion: storage.k8s.io/v1beta1
 # metadata:
 #   name: portworx-io-priority-high
+#   namespace: kong-cluster
 # provisioner: kubernetes.io/portworx-volume
 # parameters:
 #   repl: "1"
@@ -150,6 +167,7 @@ parameters:
 # apiVersion: storage.k8s.io/v1beta1
 # metadata:
 #   name: local-storage
+#   namespace: kong-cluster
 # provisioner: kubernetes.io/no-provisioner
 # # reclaimPolicy: Delete
 # # volumeBindingMode: Immediate
