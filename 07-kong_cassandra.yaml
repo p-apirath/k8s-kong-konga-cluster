@@ -14,10 +14,10 @@ spec:
     port: 80
     targetPort: 80
     protocol: TCP
-  # - name: kong-proxy-lb
-  #   port: 8000
-  #   targetPort: 8000
-  #   protocol: TCP
+  - name: kong-proxy-lb
+    port: 8000
+    targetPort: 8000
+    protocol: TCP
   - name: kong-proxy-ssl-lb
     port: 443
     targetPort: 8443
