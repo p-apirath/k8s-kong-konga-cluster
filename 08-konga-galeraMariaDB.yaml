@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
       - name: konga-rc
-        image: pantsel/konga:next
+        image: pantsel/konga:latest
         env:
           - name: DB_URI
             value: "mysql://kong:kong@mariadb:3306/konga_database"
