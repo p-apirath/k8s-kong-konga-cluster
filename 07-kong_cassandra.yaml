@@ -14,10 +14,10 @@ spec:
     port: 80
     targetPort: 80
     protocol: TCP
-  - name: kong-proxy-lb
-    port: 8000
-    targetPort: 8000
-    protocol: TCP
+  # - name: kong-proxy-lb
+  #   port: 8000
+  #   targetPort: 8000
+  #   protocol: TCP
   - name: kong-proxy-ssl-lb
     port: 443
     targetPort: 8443
@@ -92,8 +92,10 @@ spec:
     spec:
       containers:
       - name: kong-rc
-        image: kong
-        command: [ "wget", "https://raw.githubusercontent.com/p-apirath/k8s-kong-konga-cluster/master/nginx-include.conf", "-O", "/usr/local/kong/nginx-include.conf", "2>/dev/null", "&&", "export", 'KONG_NGINX_DAEMON="off"', "&&", "kong", "migrations", "up", "&&", "kong", "prepare", "-p", "/usr/local/kong/", "&&", "/usr/local/openresty/nginx/sbin/nginx", "-c", "/usr/local/kong/nginx.conf", "-p", "/usr/local/kong/" ]
+        # image: kong
+        image: apirath/kong-appgw:latest
+        # command: [ "wget", "https://raw.githubusercontent.com/p-apirath/k8s-kong-konga-cluster/master/nginx-include.conf", "-O", "/usr/local/kong/nginx-include.conf", "2>/dev/null", "&&", "export", 'KONG_NGINX_DAEMON="off"', "&&", "kong", "migrations", "up", "&&", "kong", "prepare", "-p", "/usr/local/kong/", "&&", "/usr/local/openresty/nginx/sbin/nginx", "-c", "/usr/local/kong/nginx.conf", "-p", "/usr/local/kong/" ]
+        # command: [ "wget", "https://raw.githubusercontent.com/p-apirath/k8s-kong-konga-cluster/master/nginx-include.conf", "-O", "/usr/local/kong/nginx-include.conf", "2>/dev/null" ]
         env:
           - name: KONG_PROXY_LISTEN
             value: "0.0.0.0:8000, 0.0.0.0:8443 ssl"
@@ -119,8 +121,8 @@ spec:
             value: "/dev/stderr"
           - name: KONG_ADMIN_ERROR_LOG
             value: "/dev/stderr"
-          - name: KONG_NGINX_HTTP_INCLUDE
-            value: "/usr/local/kong/nginx-include.conf"
+          # - name: KONG_NGINX_HTTP_INCLUDE
+          #   value: "/usr/local/kong/nginx-include.conf"
         ports:
         - name: proxy
           containerPort: 8000
