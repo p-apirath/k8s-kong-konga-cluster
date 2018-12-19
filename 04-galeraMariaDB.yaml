@@ -115,3 +115,76 @@ spec:
       resources:
         requests:
           storage: 10Gi
+
+##### phpMyadmin Service #####
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myadmin
+  labels:
+    app: myadmin
+  namespace: kong-cluster
+spec:
+  ports:
+  - port: 80
+    name: mysql
+  clusterIP: None
+  selector:
+    app: myadmin
+# ##### phpMyadmin external Service #####
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: myadmin-lb
+#   namespace: kong-cluster
+# spec:
+#   type: LoadBalancer
+#   loadBalancerSourceRanges:
+#   - 0.0.0.0/0
+#   ports:
+#   - name: myadmin-lb-ui
+#     port: 80
+#     targetPort: 80
+#     protocol: TCP
+#   selector:
+#     app: myadmin
+##### phpMyadmin #####
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: myadmin
+  namespace: kong-cluster
+spec:
+  replicas: 2
+  selector:
+    app: myadmin
+  template:
+    metadata:
+      name: myadmin
+      labels:
+        app: myadmin
+    spec:
+      containers:
+      - name: myadmin
+        image: phpmyadmin/phpmyadmin:latest
+        env:
+          - name: "PMA_ARBITRARY"
+            value: "1"
+          - name: "PMA_HOST"
+            value: "mariadb"
+          - name: "PMA_PORT"
+            value: "3306"
+          - name: "PMA_USER"
+            value: "root"
+          - name: "PMA_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                name: mysql-password
+                key: password
+        ports:
+        - name: myadmin-ui
+          containerPort: 80
+          protocol: TCP
