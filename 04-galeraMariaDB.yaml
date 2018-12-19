@@ -158,7 +158,7 @@ metadata:
   name: myadmin
   namespace: kong-cluster
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     app: myadmin
   template:
