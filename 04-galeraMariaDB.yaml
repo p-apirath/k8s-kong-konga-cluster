@@ -152,15 +152,13 @@ spec:
 #     app: myadmin
 ##### phpMyadmin #####
 ---
-apiVersion: v1
-kind: ReplicationController
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   name: myadmin
   namespace: kong-cluster
 spec:
   replicas: 1
-  selector:
-    app: myadmin
   template:
     metadata:
       name: myadmin
@@ -171,19 +169,19 @@ spec:
       - name: myadmin-rc
         image: phpmyadmin/phpmyadmin:latest
         env:
-          - name: PMA_ARBITRARY
-            value: "1"
-          - name: PMA_HOST
-            value: "mariadb"
-          - name: PMA_PORT
-            value: "3306"
-          - name: PMA_USER
-            value: "root"
-          - name: PMA_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mysql-password
-                key: password
+        - name: PMA_ARBITRARY
+          value: "1"
+        - name: PMA_HOST
+          value: "mariadb"
+        - name: PMA_PORT
+          value: "3306"
+        - name: PMA_USER
+          value: "root"
+        - name: PMA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: password
         ports:
         - name: myadmin-ui
           containerPort: 80

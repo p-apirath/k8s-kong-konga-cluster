@@ -31,7 +31,7 @@ metadata:
 spec:
   clusterIP: None
   ports:
-    - port: 9042
+  - port: 9042
   selector:
     app: cassandra
 
@@ -79,28 +79,28 @@ spec:
             exec:
               command: ["/bin/sh", "-c", "PID=$(pidof java) && kill $PID && while ps -p $PID > /dev/null; do sleep 1; done"]
         env:
-          - name: MAX_HEAP_SIZE
-            value: 512M
-          - name: HEAP_NEWSIZE
-            value: 128M
-          - name: CASSANDRA_SEEDS
-            value: "cassandra-0.cassandra.kong-cluster.svc.cluster.local,cassandra-1.cassandra.kong-cluster.svc.cluster.local,cassandra-2.cassandra.kong-cluster.svc.cluster.local"
-          - name: CASSANDRA_CLUSTER_NAME
-            value: "K8sCassandra"
-          - name: CASSANDRA_DC
-            value: "DataCenter-K8s"
-          - name: CASSANDRA_RACK
-            value: "K8sRack-KongDB"
-          - name: CASSANDRA_AUTO_BOOTSTRAP
-            value: "false"
-          - name: CASSANDRA_USER
-            value: "kong"
-          - name: CASSANDRA_PASSWORD
-            value: "kong"
-          - name: POD_IP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.podIP
+        - name: MAX_HEAP_SIZE
+          value: 512M
+        - name: HEAP_NEWSIZE
+          value: 128M
+        - name: CASSANDRA_SEEDS
+          value: "cassandra-0.cassandra.kong-cluster.svc.cluster.local,cassandra-1.cassandra.kong-cluster.svc.cluster.local,cassandra-2.cassandra.kong-cluster.svc.cluster.local"
+        - name: CASSANDRA_CLUSTER_NAME
+          value: "K8sCassandra"
+        - name: CASSANDRA_DC
+          value: "DataCenter-K8s"
+        - name: CASSANDRA_RACK
+          value: "K8sRack-KongDB"
+        - name: CASSANDRA_AUTO_BOOTSTRAP
+          value: "false"
+        - name: CASSANDRA_USER
+          value: "kong"
+        - name: CASSANDRA_PASSWORD
+          value: "kong"
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         readinessProbe:
           exec:
             command:

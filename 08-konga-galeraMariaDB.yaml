@@ -54,24 +54,24 @@ spec:
       - name: konga-rc
         image: pantsel/konga:latest
         env:
-          - name: DB_URI
-            value: "mysql://kong:kong@mariadb:3306/konga_database"
-          # - name: DB_ADAPTER
-          #   value: "mysql"
-          # - name: DB_HOST
-          #   value: "mariadb"
-          # - name: DB_PORT
-          #   value: 3306
-          # - name: DB_USER
-          #   value: "kong"
-          # - name: DB_PASSWORD
-          #   value: "kong"
-          # - name: DB_DATABASE
-          #   value: "konga_database"
-          - name: TOKEN_SECRET
-            value: "km1GUr4RkcQD7DewhJPNXrCuZwcKmqjb"
-          - name: NODE_ENV
-            value: "production"
+        - name: DB_URI
+          value: "mysql://kong:kong@mariadb:3306/konga_database"
+        # - name: DB_ADAPTER
+        #   value: "mysql"
+        # - name: DB_HOST
+        #   value: "mariadb"
+        # - name: DB_PORT
+        #   value: 3306
+        # - name: DB_USER
+        #   value: "kong"
+        # - name: DB_PASSWORD
+        #   value: "kong"
+        # - name: DB_DATABASE
+        #   value: "konga_database"
+        - name: TOKEN_SECRET
+          value: "km1GUr4RkcQD7DewhJPNXrCuZwcKmqjb"
+        - name: NODE_ENV
+          value: "production"
         ports:
         - name: webui
           containerPort: 1337
