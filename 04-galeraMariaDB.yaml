@@ -6,7 +6,7 @@
 #   name: mariadb-lb
 #   labels:
 #     app: mariadb-lb
-#   namespace: kong-cluster
+#   namespace: kong-appgw
 # spec:
 #   type: LoadBalancer
 #   loadBalancerSourceRanges:
@@ -27,7 +27,7 @@ metadata:
   name: mariadb
   labels:
     app: mariadb
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   ports:
   - port: 3306
@@ -36,25 +36,13 @@ spec:
   selector:
     app: mariadb
 
-##### Secret for store password with base64 #####
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mysql-password
-  namespace: kong-cluster
-type: Opaque
-data:
-  # Root password (base64): echo -n 'apirath' | base64
-  password: YXBpcmF0aA==
-
 ##### Mariadb Galera Cluster StatefulSet Template #####
 ---
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: mariadb
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   serviceName: "mariadb"
   replicas: 3
@@ -70,23 +58,41 @@ spec:
         - name: mysql
           containerPort: 3306
         env:
+        - name: CLUSTER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: galera_mariadb_cluster_name
+        - name: DISCOVERY_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: galera_mariadb_discovery_service
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-password
-              key: password
-        - name: DISCOVERY_SERVICE
-          value: etcd-client:2379
+              name: kong-secrets
+              key: galera_mariadb_root_pass
         - name: XTRABACKUP_PASSWORD
-          value: password
-        - name: CLUSTER_NAME
-          value: galera-mariadb-cluster
+          valueFrom:
+            secretKeyRef:
+              name: kong-secrets
+              key: galera_mariadb_xtrabackup_passwd
         - name: MYSQL_DATABASE
-          value: konga_database
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: galera_mariadb_db_name
         - name: MYSQL_USER
-          value: kong
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: galera_mariadb_user
         - name: MYSQL_PASSWORD
-          value: kong
+          valueFrom:
+            secretKeyRef:
+              name: kong-secrets
+              key: galera_mariadb_pass
         readinessProbe:
           exec:
             command:
@@ -124,7 +130,7 @@ metadata:
   name: myadmin
   labels:
     app: myadmin
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   ports:
   - port: 80
@@ -138,7 +144,7 @@ spec:
 # kind: Service
 # metadata:
 #   name: myadmin-lb
-#   namespace: kong-cluster
+#   namespace: kong-appgw
 # spec:
 #   type: LoadBalancer
 #   loadBalancerSourceRanges:
@@ -156,9 +162,9 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: myadmin
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       name: myadmin
@@ -172,16 +178,25 @@ spec:
         - name: PMA_ARBITRARY
           value: "1"
         - name: PMA_HOST
-          value: "mariadb"
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: galera_mariadb_host
         - name: PMA_PORT
-          value: "3306"
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: galera_mariadb_port
         - name: PMA_USER
-          value: "root"
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: galera_mariadb_admin
         - name: PMA_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-password
-              key: password
+              name: kong-secrets
+              key: galera_mariadb_root_pass
         ports:
         - name: myadmin-ui
           containerPort: 80

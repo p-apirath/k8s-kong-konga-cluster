@@ -1,54 +1,54 @@
-##### etcd persistent volume claims #####
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: etcd0-pvc
-  labels:
-    app: etcd0-pvc
-  namespace: kong-cluster
-  annotations:
-    volume.beta.kubernetes.io/storage-class: gcp-storage
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: etcd1-pvc
-  labels:
-    app: etcd1-pvc
-  namespace: kong-cluster
-  annotations:
-    volume.beta.kubernetes.io/storage-class: gcp-storage
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: etcd2-pvc
-  labels:
-    app: etcd2-pvc
-  namespace: kong-cluster
-  annotations:
-    volume.beta.kubernetes.io/storage-class: gcp-storage
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+# ##### etcd persistent volume claims #####
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: etcd0-pvc
+#   labels:
+#     app: etcd0-pvc
+#   namespace: kong-appgw
+#   annotations:
+#     volume.beta.kubernetes.io/storage-class: gcp-storage
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
+#
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: etcd1-pvc
+#   labels:
+#     app: etcd1-pvc
+#   namespace: kong-appgw
+#   annotations:
+#     volume.beta.kubernetes.io/storage-class: gcp-storage
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
+#
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: etcd2-pvc
+#   labels:
+#     app: etcd2-pvc
+#   namespace: kong-appgw
+#   annotations:
+#     volume.beta.kubernetes.io/storage-class: gcp-storage
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
 
 ##### etcd cluster #####
 ---
@@ -56,7 +56,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: etcd-client
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   ports:
   - name: etcd-client-port
@@ -74,7 +74,7 @@ metadata:
     app: etcd
     etcd_node: etcd0
   name: etcd0
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   containers:
   - command:
@@ -111,7 +111,7 @@ metadata:
   labels:
     etcd_node: etcd0
   name: etcd0
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   ports:
   - name: client
@@ -133,7 +133,7 @@ metadata:
     app: etcd
     etcd_node: etcd1
   name: etcd1
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   containers:
   - command:
@@ -171,7 +171,7 @@ metadata:
   labels:
     etcd_node: etcd1
   name: etcd1
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   ports:
   - name: client
@@ -193,7 +193,7 @@ metadata:
     app: etcd
     etcd_node: etcd2
   name: etcd2
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   containers:
   - command:
@@ -230,7 +230,7 @@ metadata:
   labels:
     etcd_node: etcd2
   name: etcd2
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   ports:
   - name: client

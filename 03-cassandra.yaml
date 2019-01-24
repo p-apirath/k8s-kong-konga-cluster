@@ -6,7 +6,7 @@
 #   name: cassandra-lb
 #   labels:
 #     app: cassandra-lb
-#   namespace: kong-cluster
+#   namespace: kong-appgw
 # spec:
 #   type: LoadBalancer
 #   loadBalancerSourceRanges:
@@ -27,7 +27,7 @@ metadata:
   labels:
     app: cassandra
   name: cassandra
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   clusterIP: None
   ports:
@@ -41,7 +41,7 @@ apiVersion: "apps/v1beta1"
 kind: StatefulSet
 metadata:
   name: cassandra
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   serviceName: cassandra
   replicas: 3
@@ -65,8 +65,8 @@ spec:
           name: cql
         resources:
           limits:
-            cpu: "500m"
-            memory: 1Gi
+            cpu: "2"
+            memory: 4Gi
           requests:
            cpu: "500m"
            memory: 1Gi
@@ -79,24 +79,51 @@ spec:
             exec:
               command: ["/bin/sh", "-c", "PID=$(pidof java) && kill $PID && while ps -p $PID > /dev/null; do sleep 1; done"]
         env:
-        - name: MAX_HEAP_SIZE
-          value: 512M
-        - name: HEAP_NEWSIZE
-          value: 128M
-        - name: CASSANDRA_SEEDS
-          value: "cassandra-0.cassandra.kong-cluster.svc.cluster.local,cassandra-1.cassandra.kong-cluster.svc.cluster.local,cassandra-2.cassandra.kong-cluster.svc.cluster.local"
-        - name: CASSANDRA_CLUSTER_NAME
-          value: "K8sCassandra"
         - name: CASSANDRA_DC
-          value: "DataCenter-K8s"
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_data_center
         - name: CASSANDRA_RACK
-          value: "K8sRack-KongDB"
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_rack_name
+        - name: CASSANDRA_CLUSTER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_cluster_name
+        - name: CASSANDRA_SEEDS
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_seeds
         - name: CASSANDRA_AUTO_BOOTSTRAP
-          value: "false"
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_auto_bootstrap
+        - name: MAX_HEAP_SIZE
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_max_heap_size
+        - name: HEAP_NEWSIZE
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_heap_newsize
         - name: CASSANDRA_USER
-          value: "kong"
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_user
         - name: CASSANDRA_PASSWORD
-          value: "kong"
+          valueFrom:
+            secretKeyRef:
+              name: kong-secrets
+              key: cassandra_pass
         - name: POD_IP
           valueFrom:
             fieldRef:
@@ -131,4 +158,4 @@ spec:
       # accessModes: [ "ReadWriteMany" ]
       resources:
         requests:
-          storage: 1Gi
+          storage: 10Gi
