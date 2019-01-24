@@ -77,7 +77,7 @@ spec:
       containers:
       - name: kong-rc
         # image: kong
-        image: apirath/kong-appgw:latest
+        image: apirath/kong-appgw:v0.14.1-alpine
         env:
         - name: KONG_PROXY_LISTEN
           valueFrom:
