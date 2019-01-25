@@ -10,14 +10,13 @@ spec:
     spec:
       containers:
       - name: konga-prepare
-        image: pantsel/konga:latest
+        image: pantsel/konga:next
         command:
-          - /bin/bash
-          - start.sh
-          - -c prepare
-          - -a mysql
-          - -u ${DB_URI}
-          # [ "/bin/bash", "start.sh", "-c", "prepare", "-a", "mysql", "-u", "mysql://kong:kong@mariadb:3306/konga_database" ]
+          - "/bin/bash"
+          - "start.sh"
+          - "-c prepare"
+          - "-a mysql"
+          - "-u ${DB_URI)"
         env:
         - name: DB_URI
           valueFrom:
