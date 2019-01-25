@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: konga-webui
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   type: LoadBalancer
   loadBalancerSourceRanges:
@@ -29,7 +29,7 @@ spec:
 #   labels:
 #     app: konga
 #   name: konga
-#   namespace: kong-cluster
+#   namespace: kong-appgw
 # spec:
 #   clusterIP: None
 #   ports:
@@ -42,7 +42,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: konga
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   replicas: 1
   template:
@@ -54,24 +54,51 @@ spec:
       - name: konga-rc
         image: pantsel/konga:latest
         env:
-        - name: DB_URI
-          value: "mysql://kong:kong@mariadb:3306/konga_database"
-        # - name: DB_ADAPTER
-        #   value: "mysql"
-        # - name: DB_HOST
-        #   value: "mariadb"
-        # - name: DB_PORT
-        #   value: 3306
-        # - name: DB_USER
-        #   value: "kong"
-        # - name: DB_PASSWORD
-        #   value: "kong"
-        # - name: DB_DATABASE
-        #   value: "konga_database"
-        - name: TOKEN_SECRET
-          value: "km1GUr4RkcQD7DewhJPNXrCuZwcKmqjb"
         - name: NODE_ENV
-          value: "production"
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: konga_node_env
+        - name: TOKEN_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: konga_token_secret
+        - name: DB_URI
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: konga_db_uri
+        # - name: DB_ADAPTER
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: kong-configmap
+        #       key: konga_db_adapter
+        # - name: DB_HOST
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: kong-configmap
+        #       key: galera_mariadb_host
+        # - name: DB_PORT
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: kong-configmap
+        #       key: galera_mariadb_port
+        # - name: DB_USER
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: kong-configmap
+        #       key: galera_mariadb_user
+        # - name: DB_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: kong-secrets
+        #       key: galera_mariadb_pass
+        # - name: DB_DATABASE
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: kong-configmap
+        #       key: konga_db_database
         ports:
         - name: webui
           containerPort: 1337

@@ -7,7 +7,8 @@ kong-api with cassandra and konga with galera mariadb as admin UI for kong
 
 2. Run yaml scripts  
 ```
-$ kubectl create -f 01-storageClass.yaml
+$ kubectl create -f 00-storageClass.yaml
+$ kubectl create -f 01-configMap.yaml
 $ kubectl create -f 02-etcd-cluster.yaml
 $ kubectl create -f 03-cassandra.yaml
 $ kubectl create -f 04-galeraMariaDB.yaml

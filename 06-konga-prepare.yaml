@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: konga-prepare
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   template:
     metadata:
@@ -11,7 +11,17 @@ spec:
       containers:
       - name: konga-prepare
         image: pantsel/konga:latest
-        # command: [ "/bin/bash", "start.sh", "-c", "prepare", "-a", "postgres", "-u", "postgresql://kong:kong@postgres:5432/konga_database" ]
-        # command: [ "/bin/bash", "start.sh", "-c", "prepare", "-a", "mongo", "-u", "mongodb://kong:kong@mongo1:27017,mongo2:27017,mongo3:27017/konga_database" ]
-        command: [ "/bin/bash", "start.sh", "-c", "prepare", "-a", "mysql", "-u", "mysql://kong:kong@mariadb:3306/konga_database" ]
+        command:
+          - /bin/bash
+          - start.sh
+          - -c prepare
+          - -a mysql
+          - -u ${DB_URI}
+          # [ "/bin/bash", "start.sh", "-c", "prepare", "-a", "mysql", "-u", "mysql://kong:kong@mariadb:3306/konga_database" ]
+        env:
+        - name: DB_URI
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: konga_db_uri
       restartPolicy: Never

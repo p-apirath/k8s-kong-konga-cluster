@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: kong-migration-cassandra
-  namespace: kong-cluster
+  namespace: kong-appgw
 spec:
   template:
     metadata:
@@ -10,19 +10,38 @@ spec:
     spec:
       containers:
       - name: kong-migration-cassandra
-        image: kong
+        # image: kong
+        image: apirath/kong-appgw:v0.14.1-alpine
         env:
         - name: KONG_NGINX_DAEMON
           value: 'off'
         - name: KONG_DATABASE
-          value: cassandra
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: kong_database
         - name: KONG_CASSANDRA_CONTACT_POINTS
-          value: cassandra
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_contact_point
         - name: KONG_CASSANDRA_KEYSPACE
-          value: kong
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_keyspace
         - name: KONG_CASSANDRA_USER
-          value: kong
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: cassandra_user
         - name: KONG_CASSANDRA_PASSWORD
-          value: kong
-        command: [ "/bin/sh", "-c", "kong migrations up" ]
+          valueFrom:
+            secretKeyRef:
+              name: kong-secrets
+              key: cassandra_pass
+        command:
+          - "/bin/sh"
+          - "-c"
+          - "kong migrations up"
       restartPolicy: Never
