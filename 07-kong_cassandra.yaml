@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: kong-lb
+  name: kong-lb-ex
   namespace: kong-appgw
 spec:
   type: LoadBalancer
@@ -12,12 +12,8 @@ spec:
   ports:
   - name: kong-proxy-redirect-lb
     port: 80
-    targetPort: 80
+    targetPort: 8080
     protocol: TCP
-  # - name: kong-proxy-lb
-  #   port: 8000
-  #   targetPort: 8000
-  #   protocol: TCP
   - name: kong-proxy-ssl-lb
     port: 443
     targetPort: 8443
@@ -31,7 +27,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: kong
+    app: kong-lb-in
   name: kong
   namespace: kong-appgw
 spec:
@@ -40,7 +36,7 @@ spec:
   ports:
   # - name: kong-proxy-redirect
   #   port: 80
-  #   targetPort: 80
+  #   targetPort: 8080
   #   protocol: TCP
   - name: kong-proxy
     port: 8000
@@ -48,7 +44,7 @@ spec:
     protocol: TCP
   # - name: kong-proxy-ssl
   #   port: 443
-  #   targetPort: 443
+  #   targetPort: 8443
   #   protocol: TCP
   - name: kong-admin
     port: 8001
@@ -75,8 +71,7 @@ spec:
         app: kong
     spec:
       containers:
-      - name: kong-rc
-        # image: kong
+      - name: kong
         image: apirath/kong-appgw:v0.14.1-alpine
         env:
         - name: KONG_PROXY_LISTEN
@@ -124,8 +119,6 @@ spec:
           value: "/dev/stderr"
         - name: KONG_ADMIN_ERROR_LOG
           value: "/dev/stderr"
-        # - name: KONG_NGINX_HTTP_INCLUDE
-        #   value: "/usr/local/kong/nginx-include.conf"
         ports:
         - name: proxy
           containerPort: 8000
@@ -140,5 +133,5 @@ spec:
           containerPort: 8444
           protocol: TCP
         - name: proxy-redirect
-          containerPort: 80
+          containerPort: 8080
           protocol: TCP

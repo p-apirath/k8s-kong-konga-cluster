@@ -10,7 +10,6 @@ spec:
     spec:
       containers:
       - name: kong-migration-cassandra
-        # image: kong
         image: apirath/kong-appgw:v0.14.1-alpine
         env:
         - name: KONG_NGINX_DAEMON

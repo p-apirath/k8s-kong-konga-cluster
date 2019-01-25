@@ -172,7 +172,7 @@ spec:
         app: myadmin
     spec:
       containers:
-      - name: myadmin-rc
+      - name: myadmin
         image: phpmyadmin/phpmyadmin:latest
         env:
         - name: PMA_ARBITRARY

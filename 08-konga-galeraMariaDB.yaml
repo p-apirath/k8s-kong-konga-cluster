@@ -21,22 +21,6 @@ spec:
   selector:
     app: konga
 
-# ##### Konga Service #####
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   labels:
-#     app: konga
-#   name: konga
-#   namespace: kong-appgw
-# spec:
-#   clusterIP: None
-#   ports:
-#     - port: 1337
-#   selector:
-#     app: konga-rc
-
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -51,8 +35,8 @@ spec:
         app: konga
     spec:
       containers:
-      - name: konga-rc
-        image: pantsel/konga:latest
+      - name: konga
+        image: pantsel/konga:next
         env:
         - name: NODE_ENV
           valueFrom:
@@ -69,36 +53,6 @@ spec:
             configMapKeyRef:
               name: kong-configmap
               key: konga_db_uri
-        # - name: DB_ADAPTER
-        #   valueFrom:
-        #     configMapKeyRef:
-        #       name: kong-configmap
-        #       key: konga_db_adapter
-        # - name: DB_HOST
-        #   valueFrom:
-        #     configMapKeyRef:
-        #       name: kong-configmap
-        #       key: galera_mariadb_host
-        # - name: DB_PORT
-        #   valueFrom:
-        #     configMapKeyRef:
-        #       name: kong-configmap
-        #       key: galera_mariadb_port
-        # - name: DB_USER
-        #   valueFrom:
-        #     configMapKeyRef:
-        #       name: kong-configmap
-        #       key: galera_mariadb_user
-        # - name: DB_PASSWORD
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: kong-secrets
-        #       key: galera_mariadb_pass
-        # - name: DB_DATABASE
-        #   valueFrom:
-        #     configMapKeyRef:
-        #       name: kong-configmap
-        #       key: konga_db_database
         ports:
         - name: webui
           containerPort: 1337
