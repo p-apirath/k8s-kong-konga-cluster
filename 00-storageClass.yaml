@@ -125,10 +125,15 @@ parameters:
 # metadata:
 #   name: azurefile-storage
 # provisioner: kubernetes.io/azure-file
+# mountOptions:
+#   - dir_mode=0777
+#   - file_mode=0777
+#   - uid=1000
+#   - gid=1000
 # parameters:
 #   skuName: Standard_LRS
-#   location: eastus
-#   storageAccount: azure_storage_account_name
+#   location: southeastasia
+#   storageAccount: shareallspw
 #
 #
 # ##### Portworx Volume StorageClass #####
