@@ -39,6 +39,11 @@ spec:
             secretKeyRef:
               name: kong-secrets
               key: cassandra_pass
+        - name: KONG_CASSANDRA_REPL_FACTOR
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: kong_cassandra_replicas_factor
         command:
           - "/bin/sh"
           - "-c"

@@ -110,7 +110,10 @@ spec:
               name: kong-secrets
               key: cassandra_pass
         - name: KONG_CASSANDRA_REPL_FACTOR
-          value: "2"
+          valueFrom:
+            configMapKeyRef:
+              name: kong-configmap
+              key: kong_cassandra_replicas_factor
         - name: KONG_PROXY_ACCESS_LOG
           value: "/dev/stdout"
         - name: KONG_ADMIN_ACCESS_LOG

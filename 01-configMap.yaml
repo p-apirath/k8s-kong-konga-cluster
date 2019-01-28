@@ -33,6 +33,7 @@ data:
   galera_mariadb_admin: "root"
   galera_mariadb_user: "kong"
   kong_database: "cassandra"
+  kong_cassandra_replicas_factor: "3"
   kong_proxy_listen: "0.0.0.0:8000, 0.0.0.0:8443 ssl"
   kong_admin_listen: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
   konga_node_env: "production"
